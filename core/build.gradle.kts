@@ -17,8 +17,14 @@ kotlin {
             }
         }
     }
+
+    val ktorVersion = "1.5.4"
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -27,7 +33,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
         val androidTest by getting {
@@ -36,7 +42,11 @@ kotlin {
                 implementation("junit:junit:4.13")
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+            }
+        }
         val iosTest by getting
     }
 }
