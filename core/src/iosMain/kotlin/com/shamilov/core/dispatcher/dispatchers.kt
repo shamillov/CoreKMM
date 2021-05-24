@@ -10,10 +10,10 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.native.concurrent.ThreadLocal
 import kotlin.native.concurrent.freeze
 
-actual val dispatcherUI: CoroutineDispatcher
+internal actual val dispatcherUI: CoroutineDispatcher
     get() = MainDispatcher
 
-actual val dispatcherIO: CoroutineDispatcher
+internal actual val dispatcherIO: CoroutineDispatcher
     get() = IoDispatcher
 
 @ThreadLocal
