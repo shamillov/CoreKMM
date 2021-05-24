@@ -1,0 +1,7 @@
+# Project exclude paths
+/.gradle/
+/androidNative/build/
+/androidNative/build/intermediates/javac/debug/classes/
+/build/
+/core/build/
+/core/build/intermediates/javac/debug/classes/
