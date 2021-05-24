@@ -3,15 +3,17 @@ package com.shamilov.core.repository
 import com.shamilov.core.dispatcher.dispatcherUI
 import com.shamilov.core.model.Response
 import com.shamilov.core.model.response.CategoryResponse
+import com.shamilov.core.model.response.ProductDetailResponse
+import com.shamilov.core.model.response.ProductResponse
 import com.shamilov.core.remote.KtorClient
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 interface RemoteRepository {
     fun loadCategories(callback: (Data<List<CategoryResponse>>) -> Unit)
-    fun loadSubcategories()
-    fun loadProducts()
-    fun loadProduct()
+    fun loadSubcategories(id: Int, callback: (Data<List<CategoryResponse>>) -> Unit)
+    fun loadProducts(id: Int, callback: (Data<List<ProductResponse>>) -> Unit)
+    fun loadProduct(id: Int, callback: (Data<List<ProductDetailResponse>>) -> Unit)
 }
 
 typealias Data<T> = Result<Response<T>>
@@ -34,15 +36,42 @@ class RemoteRepositoryImpl : RemoteRepository {
         }
     }
 
-    override fun loadSubcategories() {
-        TODO("Not yet implemented")
+    override fun loadSubcategories(id: Int, callback: (Data<List<CategoryResponse>>) -> Unit) {
+        GlobalScope.launch(dispatcherUI) {
+            try {
+                val response = httpClient.loadData<Response<List<CategoryResponse>>>("/category/$id")
+                if (response != null) {
+                    callback(Result.success(response))
+                }
+            } catch (exception: Throwable) {
+                callback(Result.failure(exception))
+            }
+        }
     }
 
-    override fun loadProducts() {
-        TODO("Not yet implemented")
+    override fun loadProducts(id: Int, callback: (Data<List<ProductResponse>>) -> Unit) {
+        GlobalScope.launch(dispatcherUI) {
+            try {
+                val response = httpClient.loadData<Response<List<ProductResponse>>>("/category/$id/product")
+                if (response != null) {
+                    callback(Result.success(response))
+                }
+            } catch (exception: Throwable) {
+                callback(Result.failure(exception))
+            }
+        }
     }
 
-    override fun loadProduct() {
-        TODO("Not yet implemented")
+    override fun loadProduct(id: Int, callback: (Data<List<ProductDetailResponse>>) -> Unit) {
+        GlobalScope.launch(dispatcherUI) {
+            try {
+                val response = httpClient.loadData<Response<List<ProductDetailResponse>>>("/product/$id")
+                if (response != null) {
+                    callback(Result.success(response))
+                }
+            } catch (exception: Throwable) {
+                callback(Result.failure(exception))
+            }
+        }
     }
 }
