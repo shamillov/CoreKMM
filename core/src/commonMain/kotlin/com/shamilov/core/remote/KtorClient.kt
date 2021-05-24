@@ -18,7 +18,7 @@ class KtorClient {
         }
     }
 
-    suspend inline fun <reified T> loadData(url: String) {
+    suspend inline fun <reified T> loadData(url: String): T? {
         return httpClient.get(BASE_URL + url)
     }
 }
