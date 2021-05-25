@@ -10,6 +10,9 @@ import com.shamilov.androidNative.ui.category.CategoryFragment
 import com.shamilov.androidNative.ui.main.MainFragment
 import com.shamilov.androidNative.ui.profile.ProfileFragment
 
+/**
+ * Created by Shamilov on 24.05.2021
+ */
 fun greet(): String {
     return Greeting().greeting()
 }

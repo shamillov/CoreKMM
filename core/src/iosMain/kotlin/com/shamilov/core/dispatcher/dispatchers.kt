@@ -10,6 +10,10 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.native.concurrent.ThreadLocal
 import kotlin.native.concurrent.freeze
 
+/**
+ * Created by Shamilov on 21.05.2021
+ */
+
 internal actual val dispatcherUI: CoroutineDispatcher
     get() = MainDispatcher
 
