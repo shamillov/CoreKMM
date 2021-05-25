@@ -10,10 +10,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 interface RemoteRepository {
-    fun loadCategories(callback: (Data<List<CategoryResponse>>) -> Unit)
-    fun loadSubcategories(id: Int, callback: (Data<List<CategoryResponse>>) -> Unit)
-    fun loadProducts(id: Int, callback: (Data<List<ProductResponse>>) -> Unit)
-    fun loadProduct(id: Int, callback: (Data<List<ProductDetailResponse>>) -> Unit)
+    fun loadCategories(callback: (Result<List<CategoryResponse>>) -> Unit)
+    fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit)
+    fun loadProducts(id: Int, callback: (Result<List<ProductResponse>>) -> Unit)
+    fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit)
 }
 
 typealias Data<T> = Result<Response<T>>
@@ -23,12 +23,12 @@ class RemoteRepositoryImpl : RemoteRepository {
     //TODO("inject into constructor with DI")
     private val httpClient = KtorClient()
 
-    override fun loadCategories(callback: (Data<List<CategoryResponse>>) -> Unit) {
+    override fun loadCategories(callback: (Result<List<CategoryResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
                 val response = httpClient.loadData<Response<List<CategoryResponse>>>("/category")
                 if (response != null) {
-                    callback(Result.success(response))
+                    callback(Result.success(response.data))
                 }
             } catch (exception: Throwable) {
                 callback(Result.failure(exception))
@@ -36,12 +36,12 @@ class RemoteRepositoryImpl : RemoteRepository {
         }
     }
 
-    override fun loadSubcategories(id: Int, callback: (Data<List<CategoryResponse>>) -> Unit) {
+    override fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
                 val response = httpClient.loadData<Response<List<CategoryResponse>>>("/category/$id")
                 if (response != null) {
-                    callback(Result.success(response))
+                    callback(Result.success(response.data))
                 }
             } catch (exception: Throwable) {
                 callback(Result.failure(exception))
@@ -49,12 +49,12 @@ class RemoteRepositoryImpl : RemoteRepository {
         }
     }
 
-    override fun loadProducts(id: Int, callback: (Data<List<ProductResponse>>) -> Unit) {
+    override fun loadProducts(id: Int, callback: (Result<List<ProductResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
                 val response = httpClient.loadData<Response<List<ProductResponse>>>("/category/$id/product")
                 if (response != null) {
-                    callback(Result.success(response))
+                    callback(Result.success(response.data))
                 }
             } catch (exception: Throwable) {
                 callback(Result.failure(exception))
@@ -62,12 +62,12 @@ class RemoteRepositoryImpl : RemoteRepository {
         }
     }
 
-    override fun loadProduct(id: Int, callback: (Data<List<ProductDetailResponse>>) -> Unit) {
+    override fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
                 val response = httpClient.loadData<Response<List<ProductDetailResponse>>>("/product/$id")
                 if (response != null) {
-                    callback(Result.success(response))
+                    callback(Result.success(response.data))
                 }
             } catch (exception: Throwable) {
                 callback(Result.failure(exception))
