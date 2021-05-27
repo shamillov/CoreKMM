@@ -7,6 +7,7 @@ import com.shamilov.core.model.response.CategoryResponse
  */
 sealed class CategoryState {
     class Success(val data: List<CategoryResponse>) : CategoryState()
-    class Error(val exception: Throwable?) : CategoryState()
+    class Error(val exception: Throwable) : CategoryState()
     object Loading : CategoryState()
+    object IsEmpty : CategoryState()
 }

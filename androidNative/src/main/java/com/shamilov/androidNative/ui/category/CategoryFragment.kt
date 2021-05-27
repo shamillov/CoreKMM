@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shamilov.androidNative.R
 import com.shamilov.androidNative.ui.category.adapter.CategoryAdapter
+import com.shamilov.androidNative.utils.extensions.gone
+import com.shamilov.androidNative.utils.extensions.visible
 import kotlinx.coroutines.flow.collect
 
 /**
@@ -35,14 +37,17 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
             viewModel.state.collect { state ->
                 when (state) {
                     is CategoryState.Loading -> {
-                        progressBar.visibility = View.VISIBLE
+                        progressBar.visible()
                     }
                     is CategoryState.Success -> {
-                        progressBar.visibility = View.GONE
+                        progressBar.gone()
                         adapter.setData(state.data)
                     }
                     is CategoryState.Error -> {
-                        Toast.makeText(requireContext(), state.exception?.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), state.exception.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is CategoryState.IsEmpty -> {
+                        Toast.makeText(requireContext(), "Categories is empty", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
