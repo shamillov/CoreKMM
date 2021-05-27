@@ -6,6 +6,7 @@ import com.shamilov.core.model.response.CategoryResponse
 import com.shamilov.core.model.response.ProductDetailResponse
 import com.shamilov.core.model.response.ProductResponse
 import com.shamilov.core.remote.KtorClient
+import io.ktor.client.request.get
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -21,12 +22,12 @@ typealias Data<T> = Result<Response<T>>
 class RemoteRepositoryImpl : RemoteRepository {
 
     //TODO("inject into constructor with DI")
-    private val httpClient = KtorClient()
+    private val client = KtorClient()
 
     override fun loadCategories(callback: (Result<List<CategoryResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
-                val response = httpClient.loadData<Response<List<CategoryResponse>>>("/category")
+                val response = client.http.get<Response<List<CategoryResponse>>?>("category")
                 if (response != null) {
                     callback(Result.success(response.data))
                 }
@@ -39,7 +40,7 @@ class RemoteRepositoryImpl : RemoteRepository {
     override fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
-                val response = httpClient.loadData<Response<List<CategoryResponse>>>("/category/$id")
+                val response = client.http.get<Response<List<CategoryResponse>>?>("category/$id")
                 if (response != null) {
                     callback(Result.success(response.data))
                 }
@@ -52,7 +53,7 @@ class RemoteRepositoryImpl : RemoteRepository {
     override fun loadProducts(id: Int, callback: (Result<List<ProductResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
-                val response = httpClient.loadData<Response<List<ProductResponse>>>("/category/$id/product")
+                val response = client.http.get<Response<List<ProductResponse>>?>("category/$id/product")
                 if (response != null) {
                     callback(Result.success(response.data))
                 }
@@ -65,7 +66,7 @@ class RemoteRepositoryImpl : RemoteRepository {
     override fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit) {
         GlobalScope.launch(dispatcherUI) {
             try {
-                val response = httpClient.loadData<Response<List<ProductDetailResponse>>>("/product/$id")
+                val response = client.http.get<Response<List<ProductDetailResponse>>?>("product/$id")
                 if (response != null) {
                     callback(Result.success(response.data))
                 }
