@@ -21,10 +21,16 @@ class CategoryViewModel : ViewModel() {
 
     private fun loadCategories() {
         repository.loadCategories { result ->
-            when {
-                result.isSuccess -> _state.value = CategoryState.Success(result.getOrThrow())
-                result.isFailure -> _state.value = CategoryState.Error(result.exceptionOrNull())
-            }
+            result.fold(
+                { categories ->
+                    if (categories.isNullOrEmpty()) {
+                        _state.value = CategoryState.IsEmpty
+                    } else {
+                        _state.value = CategoryState.Success(categories)
+                    }
+                },
+                { throwable -> _state.value = CategoryState.Error(throwable) }
+            )
         }
     }
 }
