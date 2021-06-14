@@ -11,3 +11,7 @@ sealed class CategoryState {
     object Loading : CategoryState()
     object IsEmpty : CategoryState()
 }
+
+sealed class CategoryAction {
+    class OpenProducts(val id: Int) : CategoryAction()
+}

@@ -7,11 +7,10 @@
     tools:context=".ui.products.ProductsFragment"
     >
 
-    <TextView
-        android:id="@+id/tvId"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_products"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello"
-        />
+        tools:listitem="@layout/item_product"/>
 
 </FrameLayout>

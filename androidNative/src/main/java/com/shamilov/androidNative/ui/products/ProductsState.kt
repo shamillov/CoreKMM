@@ -11,3 +11,7 @@ sealed class ProductsState {
     object Loading : ProductsState()
     object Empty : ProductsState()
 }
+
+sealed class ProductsAction {
+    class OpenProduct(id: Int) : ProductsAction()
+}

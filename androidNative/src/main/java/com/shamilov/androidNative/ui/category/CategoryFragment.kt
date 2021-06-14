@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -63,7 +64,9 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
 
     private fun openProducts(id: Int) {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ProductsFragment.newInstance()).addToBackStack("").commit()
+            .replace(R.id.fragment_container, ProductsFragment.newInstance(bundleOf("KEY" to id)))
+            .addToBackStack("")
+            .commit()
     }
 }
 
