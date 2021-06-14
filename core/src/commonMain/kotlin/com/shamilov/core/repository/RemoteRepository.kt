@@ -35,7 +35,7 @@ class RemoteRepositoryImpl(private val client: KtorClient) : RemoteRepository {
     override suspend fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit) {
         try {
             val response = client.http.get<Response<List<CategoryResponse>>> {
-                url { path("category/$id") }
+                url { path("api/category/$id") }
             }
             callback(Result.success(response.data))
         } catch (exception: Throwable) {
@@ -46,7 +46,7 @@ class RemoteRepositoryImpl(private val client: KtorClient) : RemoteRepository {
     override suspend fun loadProducts(id: Int): Result<List<ProductResponse>> {
         return try {
             val response = client.http.get<Response<List<ProductResponse>>> {
-                url { path("category/$id/product") }
+                url { path("api/category/$id/product") }
             }
             Result.success(response.data)
         } catch (exception: Throwable) {
@@ -57,7 +57,7 @@ class RemoteRepositoryImpl(private val client: KtorClient) : RemoteRepository {
     override suspend fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit) {
         try {
             val response = client.http.get<Response<List<ProductDetailResponse>>> {
-                url { path("product/$id") }
+                url { path("api/product/$id") }
             }
             callback(Result.success(response.data))
         } catch (exception: Throwable) {

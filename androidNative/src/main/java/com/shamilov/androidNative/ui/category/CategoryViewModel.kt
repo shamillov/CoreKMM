@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.shamilov.core.repository.RemoteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 class CategoryViewModel(private val repository: RemoteRepository) : ViewModel() {
 
     private var _state = MutableStateFlow<CategoryState>(CategoryState.Loading)
-    val state: StateFlow<CategoryState> = _state
+    val state: StateFlow<CategoryState> = _state.asStateFlow()
 
     init {
         loadCategories()
