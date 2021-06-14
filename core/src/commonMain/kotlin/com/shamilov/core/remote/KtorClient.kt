@@ -14,10 +14,8 @@ import kotlinx.serialization.json.Json
 /**
  * Created by Shamilov on 21.05.2021
  */
-class KtorClient {
-    companion object {
-        const val BASE_URL = "uvays.fvds.ru/api"
-    }
+object KtorClient {
+    private const val BASE_URL = "uvays.fvds.ru"
 
     internal val http = HttpClient {
         install(JsonFeature) {

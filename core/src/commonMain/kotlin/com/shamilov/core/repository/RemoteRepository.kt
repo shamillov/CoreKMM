@@ -1,78 +1,67 @@
 package com.shamilov.core.repository
 
-import com.shamilov.core.dispatcher.dispatcherUI
 import com.shamilov.core.model.Response
 import com.shamilov.core.model.response.CategoryResponse
 import com.shamilov.core.model.response.ProductDetailResponse
 import com.shamilov.core.model.response.ProductResponse
 import com.shamilov.core.remote.KtorClient
 import io.ktor.client.request.get
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
+/**
+ * Created by Shamilov on 14.06.2021
+ */
 interface RemoteRepository {
-    fun loadCategories(callback: (Result<List<CategoryResponse>>) -> Unit)
-    fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit)
-    fun loadProducts(id: Int, callback: (Result<List<ProductResponse>>) -> Unit)
-    fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit)
+    suspend fun loadCategories(): Result<List<CategoryResponse>>
+    suspend fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit)
+    suspend fun loadProducts(id: Int): Result<List<ProductResponse>>
+    suspend fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit)
 }
 
 typealias Data<T> = Result<Response<T>>
 
-class RemoteRepositoryImpl : RemoteRepository {
+class RemoteRepositoryImpl(private val client: KtorClient) : RemoteRepository {
 
-    //TODO("inject into constructor with DI")
-    private val client = KtorClient()
-
-    override fun loadCategories(callback: (Result<List<CategoryResponse>>) -> Unit) {
-        GlobalScope.launch(dispatcherUI) {
-            try {
-                val response = client.http.get<Response<List<CategoryResponse>>?>("category")
-                if (response != null) {
-                    callback(Result.success(response.data))
-                }
-            } catch (exception: Throwable) {
-                callback(Result.failure(exception))
+    override suspend fun loadCategories(): Result<List<CategoryResponse>> {
+        return try {
+            val response = client.http.get<Response<List<CategoryResponse>>> {
+                url { path("api/category") }
             }
+            Result.success(response.data)
+        } catch (exception: Throwable) {
+            Result.failure(exception)
         }
     }
 
-    override fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit) {
-        GlobalScope.launch(dispatcherUI) {
-            try {
-                val response = client.http.get<Response<List<CategoryResponse>>?>("category/$id")
-                if (response != null) {
-                    callback(Result.success(response.data))
-                }
-            } catch (exception: Throwable) {
-                callback(Result.failure(exception))
+    override suspend fun loadSubcategories(id: Int, callback: (Result<List<CategoryResponse>>) -> Unit) {
+        try {
+            val response = client.http.get<Response<List<CategoryResponse>>> {
+                url { path("category/$id") }
             }
+            callback(Result.success(response.data))
+        } catch (exception: Throwable) {
+            callback(Result.failure(exception))
         }
     }
 
-    override fun loadProducts(id: Int, callback: (Result<List<ProductResponse>>) -> Unit) {
-        GlobalScope.launch(dispatcherUI) {
-            try {
-                val response = client.http.get<Response<List<ProductResponse>>?>("category/$id/product")
-                if (response != null) {
-                    callback(Result.success(response.data))
-                }
-            } catch (exception: Throwable) {
-                callback(Result.failure(exception))
+    override suspend fun loadProducts(id: Int): Result<List<ProductResponse>> {
+        return try {
+            val response = client.http.get<Response<List<ProductResponse>>> {
+                url { path("category/$id/product") }
             }
+            Result.success(response.data)
+        } catch (exception: Throwable) {
+            Result.failure(exception)
         }
     }
 
-    override fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit) {
-        GlobalScope.launch(dispatcherUI) {
-            try {
-                val response = client.http.get<Response<List<ProductDetailResponse>>?>("product/$id")
-                if (response != null) {
-                    callback(Result.success(response.data))
-                }
-            } catch (exception: Throwable) {
-                callback(Result.failure(exception))
+    override suspend fun loadProduct(id: Int, callback: (Result<List<ProductDetailResponse>>) -> Unit) {
+        try {
+            val response = client.http.get<Response<List<ProductDetailResponse>>> {
+                url { path("product/$id") }
             }
+            callback(Result.success(response.data))
+        } catch (exception: Throwable) {
+            callback(Result.failure(exception))
         }
     }
 }

@@ -3,7 +3,6 @@ package com.shamilov.androidNative
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.shamilov.core.Greeting
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.shamilov.androidNative.ui.card.CardFragment
 import com.shamilov.androidNative.ui.category.CategoryFragment
@@ -13,10 +12,6 @@ import com.shamilov.androidNative.ui.profile.ProfileFragment
 /**
  * Created by Shamilov on 24.05.2021
  */
-fun greet(): String {
-    return Greeting().greeting()
-}
-
 class MainActivity : AppCompatActivity(R.layout.activity_main), OnBadgeListener {
 
     private lateinit var navView: BottomNavigationView
@@ -47,6 +42,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnBadgeListener 
                 else -> false
             }
         }
+        navView.setOnNavigationItemReselectedListener { }
     }
 
     private fun handleFragmentCreating(fragment: Fragment): Boolean {
