@@ -6,13 +6,18 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shamilov.androidNative.R
 import com.shamilov.androidNative.ui.category.adapter.CategoryAdapter
+import com.shamilov.androidNative.ui.products.ProductsFragment
 import com.shamilov.androidNative.utils.extensions.gone
 import com.shamilov.androidNative.utils.extensions.visible
+import com.shamilov.core.remote.KtorClient
+import com.shamilov.core.repository.RemoteRepositoryImpl
 import kotlinx.coroutines.flow.collect
 
 /**
@@ -20,9 +25,11 @@ import kotlinx.coroutines.flow.collect
  */
 class CategoryFragment : Fragment(R.layout.fragment_category) {
 
-    private val viewModel: CategoryViewModel by viewModels()
+    private val viewModel: CategoryViewModel by viewModels { ViewModelFactory() }
 
-    private val adapter = CategoryAdapter()
+    private val adapter = CategoryAdapter { id ->
+        openProducts(id)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,5 +59,16 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
                 }
             }
         }
+    }
+
+    private fun openProducts(id: Int) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, ProductsFragment.newInstance()).addToBackStack("").commit()
+    }
+}
+
+class ViewModelFactory : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return CategoryViewModel(RemoteRepositoryImpl(KtorClient)) as T
     }
 }

@@ -13,7 +13,9 @@ import com.shamilov.core.model.response.CategoryResponse
 /**
  * Created by Shamilov on 25.05.2021
  */
-class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(
+    private val listener: (Int) -> Unit
+) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var items = listOf<CategoryResponse>()
 
@@ -24,7 +26,8 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false),
+            listener
         )
     }
 
@@ -34,12 +37,16 @@ class CategoryAdapter : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>
 
     override fun getItemCount() = items.count()
 
-    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CategoryViewHolder(
+        itemView: View,
+        private val listener: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
 
         private val image = itemView.findViewById<ImageView>(R.id.iv_category)
         private val title = itemView.findViewById<TextView>(R.id.tv_category)
 
         fun bind(model: CategoryResponse) {
+            itemView.setOnClickListener { listener.invoke(model.id) }
             image.load(model.image.url) { crossfade(1000) }
             title.text = model.name
         }
