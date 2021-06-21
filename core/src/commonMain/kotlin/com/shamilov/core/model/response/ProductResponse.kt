@@ -8,7 +8,7 @@ data class ProductResponse(
     val id: Int,
     val name: String,
     val description: String?,
-    val price: Int?,
+    val price: Int,
     val rating: Int?,
     @SerialName("media")
     val image: List<MediaResponse>?

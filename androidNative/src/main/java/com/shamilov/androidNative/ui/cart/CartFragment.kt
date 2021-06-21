@@ -1,4 +1,4 @@
-package com.shamilov.androidNative.ui.card
+package com.shamilov.androidNative.ui.cart
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import com.shamilov.androidNative.R
 /**
  * Created by Shamilov on 24.05.2021
  */
-class CardFragment : Fragment(R.layout.fragment_card) {
+class CartFragment : Fragment(R.layout.fragment_cart) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

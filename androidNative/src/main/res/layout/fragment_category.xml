@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
     >
 
     <androidx.recyclerview.widget.RecyclerView
@@ -13,10 +15,57 @@
         tools:listitem="@layout/item_category"
         />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:shimmer_duration="1500"
+        app:shimmer_fixed_width="800dp"
+        app:shimmer_shape="linear"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@android:color/darker_gray"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@android:color/darker_gray"
+                />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </FrameLayout>
