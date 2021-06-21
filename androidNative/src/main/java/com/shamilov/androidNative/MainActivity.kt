@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.shamilov.androidNative.ui.card.CardFragment
+import com.shamilov.androidNative.ui.cart.CartFragment
 import com.shamilov.androidNative.ui.category.CategoryFragment
 import com.shamilov.androidNative.ui.main.MainFragment
 import com.shamilov.androidNative.ui.profile.ProfileFragment
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnBadgeListener 
             when (menuItem.itemId) {
                 R.id.main -> handleFragmentCreating(MainFragment())
                 R.id.category -> handleFragmentCreating(CategoryFragment())
-                R.id.card -> handleFragmentCreating(CardFragment())
+                R.id.cart -> handleFragmentCreating(CartFragment())
                 R.id.profile -> handleFragmentCreating(ProfileFragment())
 
                 else -> false

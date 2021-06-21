@@ -3,7 +3,6 @@ package com.shamilov.androidNative.ui.products
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -11,12 +10,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shamilov.androidNative.R
 import com.shamilov.androidNative.ui.product.ProductFragment
 import com.shamilov.androidNative.ui.products.adapter.ProductsAdapter
-import com.shamilov.core.model.response.ProductResponse
+import com.shamilov.androidNative.ui.products.mapper.ProductItemMapper
+import com.shamilov.androidNative.ui.products.model.ProductData
 import com.shamilov.core.remote.KtorClient
 import com.shamilov.core.repository.RemoteRepositoryImpl
 import kotlinx.coroutines.flow.collect
@@ -40,8 +39,8 @@ class ProductsFragment : Fragment(R.layout.products_fragment) {
     }
 
     private val adapter by lazy {
-        ProductsAdapter { id ->
-            openProduct(id)
+        ProductsAdapter { product ->
+            openProduct(product)
         }
     }
 
@@ -80,12 +79,13 @@ class ProductsFragment : Fragment(R.layout.products_fragment) {
         }
     }
 
-    private fun openProduct(id: ProductResponse) {
+    private fun openProduct(product: ProductData) {
+        ProductFragment.newInstance(bundleOf("KEY" to product)).show(parentFragmentManager, "")
     }
 }
 
 class ProductsViewModelFactory(private val id: Int) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ProductsViewModel(id, RemoteRepositoryImpl(KtorClient)) as T
+        return ProductsViewModelImpl(id, RemoteRepositoryImpl(KtorClient), ProductItemMapper()) as T
     }
 }

@@ -15,9 +15,9 @@ import com.shamilov.core.model.response.CategoryResponse
  */
 class CategoryAdapter(
     private val listener: (Int) -> Unit
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+) : RecyclerView.Adapter<CategoryViewHolder>() {
 
-    private var items = listOf<CategoryResponse>()
+    private var items = emptyList<CategoryResponse>()
 
     fun setData(items: List<CategoryResponse>) {
         this.items = items
@@ -36,19 +36,4 @@ class CategoryAdapter(
     }
 
     override fun getItemCount() = items.count()
-
-    inner class CategoryViewHolder(
-        itemView: View,
-        private val listener: (Int) -> Unit
-    ) : RecyclerView.ViewHolder(itemView) {
-
-        private val image = itemView.findViewById<ImageView>(R.id.iv_category)
-        private val title = itemView.findViewById<TextView>(R.id.tv_category)
-
-        fun bind(model: CategoryResponse) {
-            itemView.setOnClickListener { listener.invoke(model.id) }
-            image.load(model.image.url) { crossfade(1000) }
-            title.text = model.name
-        }
-    }
 }

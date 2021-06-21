@@ -5,16 +5,26 @@ import androidx.lifecycle.viewModelScope
 import com.shamilov.core.repository.RemoteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
  * Created by Shamilov on 24.05.2021
  */
-class CategoryViewModel(private val repository: RemoteRepository) : ViewModel() {
+interface CategoryViewModel {
+    val state: StateFlow<CategoryState>
 
-    private var _state = MutableStateFlow<CategoryState>(CategoryState.Loading)
-    val state: StateFlow<CategoryState> = _state.asStateFlow()
+    fun openProducts(id: Int)
+}
+
+class CategoryViewModelImpl(
+    private val repository: RemoteRepository
+) : ViewModel(), CategoryViewModel {
+
+    override val state = MutableStateFlow<CategoryState>(CategoryState.Loading)
+
+    override fun openProducts(id: Int) {
+        TODO("Not yet implemented")
+    }
 
     init {
         loadCategories()
@@ -22,16 +32,16 @@ class CategoryViewModel(private val repository: RemoteRepository) : ViewModel() 
 
     private fun loadCategories() {
         viewModelScope.launch {
-            _state.value = repository.loadCategories()
+            state.value = repository.loadCategories()
                 .fold(
-                    { categories ->
+                    onSuccess = { categories ->
                         if (categories.isNullOrEmpty()) {
                             CategoryState.IsEmpty
                         } else {
                             CategoryState.Success(categories)
                         }
                     },
-                    { throwable ->
+                    onFailure = { throwable ->
                         CategoryState.Error(throwable)
                     }
                 )
